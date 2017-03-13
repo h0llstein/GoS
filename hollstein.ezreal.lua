@@ -6,7 +6,7 @@ function AutoUpdate(data)
 		PrintChat("New version found!" .. data)
 		PrintChat("Downloading update, please wait ...")
 
-DownloadFileAsync("https://github.com/h0llstein/GoS/blob/master/hollstein.ezreal.lua"),
+DownloadFileAsync("https://github.com/h0llstein/GoS/blob/master/hollstein.ezreal.lua",
 SCRIPT_PATH .. "hollstein.ezreal.lua", function() PrintChat("Update Done ! Please 2x F6!") return end)
 	else
 		PrintChat("No updates available!")
