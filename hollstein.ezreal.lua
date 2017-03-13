@@ -150,11 +150,12 @@ function Ezreal:Tick()
 		if Mode() == "Harass" then
 				if(myHero.mana/myHero.maxMana >= self.Ezreal.Harass.Mana:Value()/100) then
 					if self.Ezreal.Harass.Q:Value() and Ready(_Q) and ValidTarget(target, 1150) then
-						local QPred.hitChance > 0.3 and not QPred:mCollsion(1)
+						local QPred = GetPrediction(enemy, self.SpellsQ)
+						if QPred.hitChance > 0.3 and not QPred:mCollsion(1) then
 							CastSkillshot(_Q, QPred.castPos)
 						end
 					end
-					if self.Ezreal.Harass.W:Value() and Ready(_W) and Valid Target(target, 1000) then
+					if self.Ezreal.Harass.W:Value() and Ready(_W) and ValidTarget(target, 1000) then
 						local WPred = GetLinearAOEPrediction(target, self.Spells.W)
 						if WPred.hitChance > 0.3 then
 							CastSkillshot(_W, WPred.castPos)
