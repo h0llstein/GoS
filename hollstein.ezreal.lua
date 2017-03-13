@@ -17,7 +17,7 @@ GetWebResultAsync("https://github.com/h0llstein/GoS/blob/master/hollstein.ezreal
 
 local champ = {"Ezreal"}
 local insert = table.insert
-if not table.contains(champ, myHero.charName) then print("" ..GetObjectName(myHero)... "is not supported!") return end
+if not table.contains(champ, myHero.charName) then print("" ..GetObjectName(myHero).. "is not supported!") return end
 
 require("DamageLib")
 require("OpenPredict")
