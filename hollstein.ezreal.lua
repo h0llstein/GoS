@@ -150,7 +150,7 @@ function Ezreal:Tick()
 		if Mode() == "Harass" then
 				if(myHero.mana/myHero.maxMana >= self.Ezreal.Harass.Mana:Value()/100) then
 					if self.Ezreal.Harass.Q:Value() and Ready(_Q) and ValidTarget(target, 1150) then
-						local QPred.hitChance > 0.3 and not QPred:mCollsion(1) then
+						local QPred.hitChance > 0.3 and not QPred:mCollsion(1)
 							CastSkillshot(_Q, QPred.castPos)
 						end
 					end
