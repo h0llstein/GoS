@@ -127,7 +127,7 @@ function Ezreal:Tick()
 			end
 		end
 		if self.Ezreal.Combo.W:Value() and Ready(_W) and ValidTarget(target, 1000) then
-			local WPred = GetPrediction(target, self.Spells.W) then
+			local WPred = GetPrediction(target, self.Spells.W)
 			if WPred.hitChance > 0.3 then
 				CastSkillShot(_W, WPred.castPos)
 
