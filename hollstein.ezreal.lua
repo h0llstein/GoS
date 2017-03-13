@@ -217,7 +217,7 @@ function Ezreal:Tick()
 				end
 			end
 			if self.Ezreal.Ks.E:Value() and Ready(_E) and ValidTarget(enemy, 1225) then
-				if GetCurrentHP(enemy) < getdmg("E", enemy, my Hero) then
+				if GetCurrentHP(enemy) < getdmg("E", enemy, myHero) then
 					local EPred = GetPrediction(enemy, self.Spells.E)
 					if EPred.hitChance > 0.3 then
 						CastSkillshot(_W, WPred.castPos)
@@ -236,16 +236,15 @@ function Ezreal:Tick()
 end
 		function Ezreal:Draw()
 			if self.Ezreal.Draw.Q:Value() then
-				Draw Circle(GetOrigin(myHero), 1150, 0, 150, GoS.White)
+				DrawCircle(myHero, 1150, 0, 150, GoS.White)
 			end
 			if self.Ezreal.Draw.W:Value() then
-				Draw Circle(GetOrigin(myHero), 1000, 0, 150, GoS.White)
+				DrawCircle(myHero, 1000, 0, 150, GoS.White)
 			end
 			if self.Ezreal.Draw.E:Value() then
-				Draw Circle(GetOrigin(myHero), 475, 0, 150, GoS.White)
+				DrawCircle(myHero, 475, 0, 150, GoS.White)
 			end
 			if self.Ezreal.Draw.EM:Value() then
-				Draw Circle(GetCursourPos, 475, 0, 150, GoS.White)
+				DrawCircle(GetCursourPos(), 475, 0, 150, GoS.White)
 			end
 		end
-	end
