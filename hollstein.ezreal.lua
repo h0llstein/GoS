@@ -6,14 +6,14 @@ function AutoUpdate(data)
 		PrintChat("New version found!" .. data)
 		PrintChat("Downloading update, please wait ...")
 
-DownloadFileAsync("githublink"),
+DownloadFileAsync("https://github.com/h0llstein/GoS/blob/master/hollstein.ezreal.lua"),
 SCRIPT_PATH .. "hollstein.ezreal.lua", function() PrintChat("Update Done ! Please 2x F6!") return end)
 	else
 		PrintChat("No updates available!")
 	end
 end
 
-GetWebResultAsync("githublink", AutoUpdate)
+GetWebResultAsync("https://github.com/h0llstein/GoS/blob/master/hollstein.ezreal.lua", AutoUpdate)
 
 local champ = {"Ezreal"}
 local insert = table.insert
