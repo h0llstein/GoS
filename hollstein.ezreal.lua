@@ -247,4 +247,7 @@ end
 			if self.Ezreal.Draw.EM:Value() then
 				DrawCircle(GetCursourPos(), 475, 0, 150, GoS.White)
 			end
+			if self.Ezreal.Draw.AA:Value() then
+				DrawCircle(myHero, 550, 0, 150, GoS.White)
+			end
 		end
