@@ -133,7 +133,7 @@ function Ezreal:Tick()
 
 			end
 		end
-		if self.Ezreal.Combo.E:Value() and ready(_E)
+		if self.Ezreal.Combo.E:Value() and ready(_E) then
 			local CurPos = GetCursourPos()
 			CastSkillShot(_E, CurPos)
 
