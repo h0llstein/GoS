@@ -27,7 +27,7 @@ require("OpenPredict")
 				Q = {range = 1150, delay = 0.25, speed = 2000, width = 30},
 				W = {range = 1000, delay = 0.25, speed = 1550, width = 80},
 				E = {range = 475, delay = 0.25, speed = math.huge, width = 750},
-				R = {range = 2000, dealy = 1, speed = 2000, width = 40},
+				R = {range = 2000, delay = 1, speed = 2000, width = 40},
 	}
 self:Menu()
 OnTick(function() self:Tick() end)
