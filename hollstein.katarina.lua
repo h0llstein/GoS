@@ -207,7 +207,7 @@ function Katarina:Tick()
                         if inUlt == true and GetDistance(myHero, target) >= 580 then
                             inUlt = false
                             if self.Katarina.Combo.Q:Value() and Ready(_Q) then
-                                CastSpell(_Q)
+                                CastTargetSpell(_Q, target)
                                 if self.Katarina.Combo.E:Value() and Ready(_E) then
                                     castTargetSpell(target, _E)
                                 end
@@ -227,7 +227,7 @@ function Katarina:Tick()
                         if inUlt == true and GetDistance(myHero, target) >= 580 then
                             inUlt = false
                             if self.Katarina.Combo.Q:Value() and Ready(_Q) then
-                                CastSpell(_Q)
+                                CastTargetSpell(_Q, target)
                                 if self.Katarina.Combo.E:Value() and Ready(_E) then
                                     castTargetSpell(target, _E)
                                 end
@@ -237,6 +237,35 @@ function Katarina:Tick()
                 end
             end
         end
-        
+    end
+    if Mode == "Harass" then
+    	if self.Katarina.Harass.Q:Value() and Ready(_Q) then
+    		CastTargetSpell(_Q, target)
+    	end
+    end
+    if Mode == "LastHit" then
+    	for _, minion in pairs(minionManager.objects) do
+    		if self.Katarina.LastHit.Q:Value() and Ready(_Q) and ValidTarget(minion, 625) then
+    			if GetCurrentHP(minion) < getdmg("Q", minion, myHero) then
+    				CastTargetSpell(_Q, minion)
+    			end
+    		end
+    	end
+    end
+    if Mode == "LaneClear"
+    	for _, minion in pairs(minionManager.objects) do
+    		if self.Katarina.LaneClear.E:Value() and Ready(_E) and ValidTarget(minion, 725) then
+    			CastTargetSpell(_E, minion)
+    			if self.Katarina.LaneClear.Q:Value() and Ready(_Q) and ValidTarget(minion, 625) then
+    				CastTargetSpell(_Q, minion)
+    				if ValidTarget(minion, 125) then
+    					AttackUnit(minion)
+    					if self.Katarina.LaneClear.W:Value() and Ready(_W) then
+    						CastSpell(_W)
+    					end
+    				end
+    			end			
+    		end
+    	end	
     end
 end
