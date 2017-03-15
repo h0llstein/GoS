@@ -95,7 +95,7 @@ function GetBestLinearAOECastPosition(aoe_radius, range, listOfEntities)
 
 			if firstEntity.id ~= secondEntity.id then
 				local pointSegment, pointLine, isOnSegment = VectorPointProjectionOnLineSegment(myHero, firstEntity, secondEntity)
-				local Distance =(aoe_radius + secondEntity.boundingRadius) * .5
+				local Distance =(aoe_radius + secondEntity.boundingRadius) * 0.5
 				-- try with and without this * .5
 
 				if secondEntity:DistanceTo(pointSegment) < Distance then
