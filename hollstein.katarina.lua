@@ -6,8 +6,8 @@ function AutoUpdate(data)
 		PrintChat("New version found!" .. data)
 		PrintChat("Downloading update, please wait ...")
 
-DownloadFileAsync("https://github.com/h0llstein/GoS/blob/master/hollstein.katarina.lua",
-SCRIPT_PATH .. "hollstein.katarina", function() PrintChat("Update Done ! Please 2x F6!") return end)
+		DownloadFileAsync("https://github.com/h0llstein/GoS/blob/master/hollstein.katarina.lua",
+		SCRIPT_PATH .. "hollstein.katarina", function() PrintChat("Update Done ! Please 2x F6!") return end)
 	else
 		PrintChat("No updates available!")
 	end
@@ -15,101 +15,101 @@ end
 
 GetWebResultAsync("https://github.com/h0llstein/GoS/blob/master/hollstein.katarina.lua", AutoUpdate)
 
-local champ = {"Katarina"}
-if not table.contains(champ, myHero.CharName) then print ("" ..GetObjectName(myHero).. "is not supported!")return end
+local champ = { "Katarina" }
+if not table.contains(champ, myHero.CharName) then print("" .. GetObjectName(myHero) .. "is not supported!") return end
 
 require("DamageLib")
 require("OpenPredict")
-	function function_name(Katarina)
-		print("Hollstein.Katarina loaded, enjoy your game")
-		self.Spells = {
-				Q = {range = 625, delay = 0.25},
-				W = {range = 0, delay = 0.25,},
-				E = {range = 725, delay = 0.25,},
-				R = {range = 550, delay = 0.25},
+function function_name(Katarina)
+	print("Hollstein.Katarina loaded, enjoy your game")
+	self.Spells = {
+		Q = { range = 625, delay = 0.25 },
+		W = { range = 0, delay = 0.25, },
+		E = { range = 725, delay = 0.25, },
+		R = { range = 550, delay = 0.25 },
 	}
-self:Menu()
-OnTick(function() self:Tick() end)
-OnDraw(function() self:Draw() end)
+	self:Menu()
+	OnTick( function() self:Tick() end)
+	OnDraw( function() self:Draw() end)
 
 end
 
 function Katarina:Menu()
-			self.Katarina = Menu("Katarina-Hollstein", "Katarina-Hollstein")
+	self.Katarina = Menu("Katarina-Hollstein", "Katarina-Hollstein")
 
-			self.Katarina:SubMenu("Combo", "Combo Settings")
-			self.Katarina.Combo:Boolean("Q", "Use Q", true)
-			self.Katarina.Combo:Boolean("W", "Use W", true)
-			self.Katarina.Combo:Boolean("E", "use E", true)
-			self.Katarina.Combo:Boolean("R", "use R", true)
-			self.Katarina.Combo:Boolean("RK", "Only use R if killable", true)
-			self.Katarina.Combo:Boolean("RC", "Don't cancel R", true)
-			self.Katarina.Combo:Boolean("Kill", "Only Combo if killable", false)
-			self.Katarina:SubMenu("Harass", "Harass Settings")
-			self.Katarina.Harass:Boolean("Q", "Use Q", true)
+	self.Katarina:SubMenu("Combo", "Combo Settings")
+	self.Katarina.Combo:Boolean("Q", "Use Q", true)
+	self.Katarina.Combo:Boolean("W", "Use W", true)
+	self.Katarina.Combo:Boolean("E", "use E", true)
+	self.Katarina.Combo:Boolean("R", "use R", true)
+	self.Katarina.Combo:Boolean("RK", "Only use R if killable", true)
+	self.Katarina.Combo:Boolean("RC", "Don't cancel R", true)
+	self.Katarina.Combo:Boolean("Kill", "Only Combo if killable", false)
+	self.Katarina:SubMenu("Harass", "Harass Settings")
+	self.Katarina.Harass:Boolean("Q", "Use Q", true)
 
-			self.Katarina:SubMenu("LaneClear", "Lane Clear Settings")
-			self.Katarina.LaneClear:Boolean("Q", "Use Q", true)
-			self.Katarina.LaneClear:Boolean("W", "Use W", true)
-			self.Katarina.LaneClear:Boolean("E", "Use E", true)
+	self.Katarina:SubMenu("LaneClear", "Lane Clear Settings")
+	self.Katarina.LaneClear:Boolean("Q", "Use Q", true)
+	self.Katarina.LaneClear:Boolean("W", "Use W", true)
+	self.Katarina.LaneClear:Boolean("E", "Use E", true)
 
-			self.Katarina:SubMenu("LastHit", "LastHit Settings")
-			self.Katarina.LastHit:Boolean("Q", "Use Q", false)
+	self.Katarina:SubMenu("LastHit", "LastHit Settings")
+	self.Katarina.LastHit:Boolean("Q", "Use Q", false)
 
-			self.Katarina:SubMenu("Ks", "KillSteal Settings")
-			self.Katarina.Ks:Boolean("Q", "Use Q", true)
-			self.Katarina.Ks:Boolean("E", "Use E", true)
-			self.Katarina.Ks:Boolean("Recall", "Don't Ks during Recall", true)
-			self.Katarina.Ks:Boolean("Disabled", "Don't Ks", false)
+	self.Katarina:SubMenu("Ks", "KillSteal Settings")
+	self.Katarina.Ks:Boolean("Q", "Use Q", true)
+	self.Katarina.Ks:Boolean("E", "Use E", true)
+	self.Katarina.Ks:Boolean("Recall", "Don't Ks during Recall", true)
+	self.Katarina.Ks:Boolean("Disabled", "Don't Ks", false)
 
-			self.Katarina:SubMenu("Draw", "Drawing Settings")
-			self.Katarina.Draw:Boolean("Q", "Draw Q", true)
-			self.Katarina.Draw:Boolean("W", "Draw W", true)
-			self.Katarina.Draw:Boolean("E", "Draw E", true)
-			self.Katarina.Draw:Boolean("R", "Draw R", true)
-			self.Katarina.Draw:Boolean("AA", "Draw AutoAttack", true)
+	self.Katarina:SubMenu("Draw", "Drawing Settings")
+	self.Katarina.Draw:Boolean("Q", "Draw Q", true)
+	self.Katarina.Draw:Boolean("W", "Draw W", true)
+	self.Katarina.Draw:Boolean("E", "Draw E", true)
+	self.Katarina.Draw:Boolean("R", "Draw R", true)
+	self.Katarina.Draw:Boolean("AA", "Draw AutoAttack", true)
 	-- body
 end
 
 local inUlt = false
-local dagger = {}
-local daggerHitPos = {}
-local resetAble = {}
-local animationCancel = {}
+local dagger = { }
+local daggerHitPos = { }
+local resetAble = { }
+local animationCancel = { }
 local kataCounter = 0
 local killablewithR = false
 
-OnProcessSpell(function(unit,spell)
+OnProcessSpell( function(unit, spell)
 	if unit == myHero and spell.name == "KatarinaR" then
 		inUlt = true
 	end
-end)
+end )
 
-OnUpdateBuff(function(unit,buff)
+OnUpdateBuff( function(unit, buff)
 	if unit == myHero and buff.Name == "katarinasound" then
-		inUlt =true
+		inUlt = true
 	end
-end)
+end )
 
-onRemoveBuff(function(unit,buff)
+onRemoveBuff( function(unit, buff)
 	if unit == myHero and buff.Name == "katarinasound" then
 		inUlt = false
 	end
-end)
+end )
 
-onIssueOrder(function(orderProc)
-	if (orderProc.flag == 2 or orderProc.flag == 3) and inUlt == true and ValidTarget(GetCurrentTarget(),550) and self.Katarina.Combo.RC:Value() then
+onIssueOrder( function(orderProc)
+	if (orderProc.flag == 2 or orderProc.flag == 3) and inUlt == true and ValidTarget(GetCurrentTarget(), 550) and self.Katarina.Combo.RC:Value() then
 		BlockOrder()
 	end
-end)
+end )
 
-OnSpellCast(function(castProc)
+OnSpellCast( function(castProc)
 	if inUlt == true and castProc.spellID == 1 and self.Katarina.Combo.RC:Value() then
 		BlockCast()
 	end
-end)
+end )
 
-OnCreateObj(function(o)
+OnCreateObj( function(o)
 	if GetDistance(o) < 2500 then
 		if o.name == "Katarina_Base_W_mis.troy" and GetDistance(o) < 100 then
 			table.insert(dagger, o)
@@ -120,34 +120,34 @@ OnCreateObj(function(o)
 			if GetDistance(o) < 50 then
 				delay = 0
 			end
-			DelayAction(function()
+			DelayAction( function()
 				table.insert(resetAble, o)
-			end,1.1 - delay)
+			end , 1.1 - delay)
 		end
 	end
-end)
+end )
 
-OnDeleteObj(function(o)
+OnDeleteObj( function(o)
 	if o.name == "Katarina_Base_W_mis.troy" then
-		for i,v in pairs(dagger) do
+		for i, v in pairs(dagger) do
 			if GetNetworkID(v) == GetNetworkID(o) then
-				table.remove(dagger,i)
+				table.remove(dagger, i)
 			end
 		end
 	end
 	if o.name == "Katarina_Base_W_Indicator_Ally.troy" then
-		for i,v in pairs(resetAble) do
+		for i, v in pairs(resetAble) do
 			if GetNetworkID(v) == GetNetworkID(o) then
-				table.remove(resetAble,i)
+				table.remove(resetAble, i)
 			end
 		end
-		for i,v in pairs(daggerHitPos) do
+		for i, v in pairs(daggerHitPos) do
 			if GetNetworkID(v) == GetNetworkID(o) then
-				table.remove(daggerHitPos,i)
+				table.remove(daggerHitPos, i)
 			end
 		end
 	end
-end)
+end )
 
 function Katarina:Draw()
 			if self.Katarina.Draw.Q:Value() then
