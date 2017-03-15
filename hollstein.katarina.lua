@@ -237,6 +237,6 @@ function Katarina:Tick()
                 end
             end
         end
-        if self.Katarina.Combo.
+        
     end
 end
