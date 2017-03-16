@@ -21,7 +21,20 @@ if not table.contains(champ, myHero.charName) then print("" .. GetObjectName(myH
 
 require("DamageLib")
 require("OpenPredict")
-function function_name(Ezreal)
+
+function Mode()
+	if _G.IOW_Loaded and IOW:Mode() then
+		return IOW:Mode()
+	elseif _G.PW_Loaded and PW:Mode() then
+		return PW:Mode()
+	elseif _G.DAC_Loaded and DAC:Mode() then
+		return DAC:Mode()
+	elseif _G.AutoCarry_Loaded and DACR:Mode() then
+		return DACR:Mode()
+	end
+end
+
+function Ezreal:_init()
 	print("Hollstein.Ezreal loaded, enjoy your game")
 	self.Spells = {
 		Q = { range = 1150, delay = 0.25, speed = 2000, width = 30 },
@@ -32,6 +45,8 @@ function function_name(Ezreal)
 	self:Menu()
 	OnTick( function() self:Tick() end)
 	OnDraw( function() self:Draw() end)
+	Callback.Add("Tick", function() self:Tick() end)
+	Callback.Add("Draw", function() self:Draw() end)
 
 end
 

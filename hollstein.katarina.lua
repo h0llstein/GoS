@@ -162,10 +162,10 @@ DamagePercent( function(target)
 
 	for i, enemy in pairs(GetEnemyHeroes()) do
 		WorldToScreen(0, GetOrigin(enemy)))
-		dmg = GetHPBarPos(enemy)
-		calc1 = dmg.x + getdmg("Q", target, myHero) + passiveDMG + getdmg("E", target, myHero) + getdmg("R", target, myHero)
-		calc2 = (GetMaxHealth(enemy) / 100 ) * (103 / 100)
-		DrawLine(dmg.x, dmg.y,  )
+		pos = GetHPBarPos(enemy)
+		calc1 = (getdmg("Q", target, myHero) + passiveDMG + getdmg("E", target, myHero) + getdmg("R", target, myHero)) / 100
+		calc2 = (GetCurrentHP(enemy) / 100 )	 * (103 / 100)
+		DrawLine(.pos.x, pos.y, pos.x + 2, pos.y + 2, )
 	end
 
 end )
