@@ -185,8 +185,8 @@ function Katarina:Draw()
     end
     if self.Katarina.Draw.Kill:Value() then
         for i, enemy in pairs(GetEnemyHeroes()) do
-    		WorldToScreen(0, GetOrigin(enemy))
-    		DrawText(KatarinaKillable(enemy), 20, enemy.x, enemy.y,ARGB(255,255,255,255))
+    		pos = WorldToScreen(0, GetOrigin(enemy))
+    		DrawText(KatarinaKillable(enemy), 20, pos.x, pos.y,ARGB(255,255,255,255))
 		end
     end
     if self.Katarina.Draw.Dmg:Value() then
