@@ -75,6 +75,10 @@ function Katarina:Menu()
     -- body
 end
 
+local dmg1
+local dmg2
+local calc1
+local calc2
 local inUlt = false
 local dagger = { }
 local daggerHitPos = { }
@@ -82,7 +86,7 @@ local resetAble = { }
 local animationCancel = { }
 local kataCounter = 0
 local killablewithR = false
-local passiveDMG = CalcDamage(myHero, target, 0,(( { [1] = 75, [2] = 80, [3] = 87, [4] = 94, [5] = 102, [6] = 111, [7] = 120, [8] = 131, [9] = 143, [10] = 155, [11] = 168, [12] = 183, [13] = 198, [14] = 214, [15] = 231, [16] = 248, [17] = 267, [18] = 287 })[GetLevel(myHero)] + GetBonusAP(myHero) *( { [1] = 0.55, [2] = 0.55, [3] = 0.55, [4] = 0.55, [5] = 0.55, [6] = 0.7, [7] = 0.7, [8] = 0.7, [9] = 0.7, [10] = 0.7, [11] = 0.85, [12] = 0.85, [13] = 0.85, [14] = 0.85, [15] = 0.85, [16] = 1, [17] = 1, [18] = 1 })[GetLevel(myHero)] + GetBonusAD(myHero) *1)))
+local passiveDMG = CalcDamage(myHero, target, 0,(( { [1] = 75, [2] = 80, [3] = 87, [4] = 94, [5] = 102, [6] = 111, [7] = 120, [8] = 131, [9] = 143, [10] = 155, [11] = 168, [12] = 183, [13] = 198, [14] = 214, [15] = 231, [16] = 248, [17] = 267, [18] = 287 })[GetLevel(myHero)] + GetBonusAP(myHero) *( { [1] = 0.55, [2] = 0.55, [3] = 0.55, [4] = 0.55, [5] = 0.55, [6] = 0.7, [7] = 0.7, [8] = 0.7, [9] = 0.7, [10] = 0.7, [11] = 0.85, [12] = 0.85, [13] = 0.85, [14] = 0.85, [15] = 0.85, [16] = 1, [17] = 1, [18] = 1 })[GetLevel(myHero)] + GetBonusDamage(myHero) *1)))
 
 OnProcessSpell( function(unit, spell)
     if unit == myHero and spell.name == "KatarinaR" and self.Katarina.Combo.RC:Value() then
@@ -154,6 +158,18 @@ OnDeleteObj( function(o)
     end
 end )
 
+DamagePercent( function(target)
+
+	for i, enemy in pairs(GetEnemyHeroes()) do
+		WorldToScreen(0, GetOrigin(enemy)))
+		dmg = GetHPBarPos(enemy)
+		calc1 = dmg.x + getdmg("Q", target, myHero) + passiveDMG + getdmg("E", target, myHero) + getdmg("R", target, myHero)
+		calc2 = (GetMaxHealth(enemy) / 100 ) * (103 / 100)
+		DrawLine(dmg.x, dmg.y,  )
+	end
+
+end )
+
 function Katarina:Draw()
     if self.Katarina.Draw.Q:Value() then
         DrawCircle(myHero, 625, 0, 150, GoS.White)
@@ -168,25 +184,34 @@ function Katarina:Draw()
         DrawCircle(myHero, 550, 0, 150, GoS.White)
     end
     if self.Katarina.Draw.Kill:Value() then
-        DrawText(KatarinaKillable(target), 5, )
+        for i, enemy in pairs(GetEnemyHeroes()) do
+    		WorldToScreen(0, GetOrigin(enemy))
+    		DrawText(KatarinaKillable(enemy), 20, enemy.x, enemy.y,ARGB(255,255,255,255))
+		end
+    end
+    if self.Katarina.Draw.Dmg:Value() then
+    	for i, enemy in pairs(GetEnemyHeroes()) do
+    		WorldToScreen(0, GetOrigin(enemy))
+    		DrawText(KatarinaKillable(enemy))
+		end
     end
 end
 
 KatarinaKillable( function(target)
     killable = "Not killable"
-    if Ready(_E) and Ready(_Q) and Ready(_W) and self.Katarina.Combo.R:Value() and Ready(_R) and GetCurrentHP(target) < getdmg("E", target, myHero) + getdmg("Q", target, myHero) + getdmg("W", target, myHero) + getdmg("R", target, myHero) then
+    if Ready(_E) and Ready(_Q) and Ready(_W) and self.Katarina.Combo.R:Value() and Ready(_R) and GetCurrentHP(target) < getdmg("E", target, myHero) + getdmg("Q", target, myHero) + passiveDMG + getdmg("R", target, myHero) then
         killable = "Killable with R"
     end
-    if Ready(_E) and Ready(_Q) and Ready(_W) and GetCurrentHP(target) < getdmg("E", target, myHero) + getdmg("Q", target, myHero) + getdmg("W", target, myHero) then
+    if Ready(_E) and Ready(_Q) and Ready(_W) and GetCurrentHP(target) < getdmg("E", target, myHero) + getdmg("Q", target, myHero) + passiveDMG then
         killable = "Killable"
     end
-    if Ready(_Q) and Ready(_W) and not Ready(_E) and GetCurrentHP(target) < getdmg("E", target, myHero) + getdmg("Q", target, myHero) + getdmg("W", target, myHero) then
+    if Ready(_Q) and Ready(_W) and not Ready(_E) and GetCurrentHP(target) < getdmg("E", target, myHero) + getdmg("Q", target, myHero) + passiveDMG then
         killable = "Killable if E ready"
     end
-    if Ready(_Q) and Ready(_E) and not Ready(_W) and GetCurrentHP(target) < getdmg("E", target, myHero) + getdmg("Q", target, myHero) + getdmg("W", target, myHero) then
+    if Ready(_Q) and Ready(_E) and not Ready(_W) and GetCurrentHP(target) < getdmg("E", target, myHero) + getdmg("Q", target, myHero) + passiveDMG then
         killable = "Killable if W ready"
     end
-    if Ready(_E) and Ready(_W) and not Ready(_Q) and GetCurrentHP(target) < getdmg("E", target, myHero) + getdmg("Q", target, myHero) + getdmg("W", target, myHero) then
+    if Ready(_E) and Ready(_W) and not Ready(_Q) and GetCurrentHP(target) < getdmg("E", target, myHero) + getdmg("Q", target, myHero) + passiveDMG then
         killable = "Killable if Q ready"
     end
     return killable
@@ -269,3 +294,4 @@ function Katarina:Tick()
     	end	
     end
 end
+
