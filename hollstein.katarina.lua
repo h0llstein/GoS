@@ -86,7 +86,7 @@ local resetAble = { }
 local animationCancel = { }
 local kataCounter = 0
 local killablewithR = false
-local passiveDMG = CalcDamage(myHero, target, 0,(( { [1] = 75, [2] = 80, [3] = 87, [4] = 94, [5] = 102, [6] = 111, [7] = 120, [8] = 131, [9] = 143, [10] = 155, [11] = 168, [12] = 183, [13] = 198, [14] = 214, [15] = 231, [16] = 248, [17] = 267, [18] = 287 })[GetLevel(myHero)] + GetBonusAP(myHero) *( { [1] = 0.55, [2] = 0.55, [3] = 0.55, [4] = 0.55, [5] = 0.55, [6] = 0.7, [7] = 0.7, [8] = 0.7, [9] = 0.7, [10] = 0.7, [11] = 0.85, [12] = 0.85, [13] = 0.85, [14] = 0.85, [15] = 0.85, [16] = 1, [17] = 1, [18] = 1 })[GetLevel(myHero)] + GetBonusDamage(myHero) *1)))
+local passiveDMG = CalcDamage(myHero, target, 0,(( { [1] = 75, [2] = 80, [3] = 87, [4] = 94, [5] = 102, [6] = 111, [7] = 120, [8] = 131, [9] = 143, [10] = 155, [11] = 168, [12] = 183, [13] = 198, [14] = 214, [15] = 231, [16] = 248, [17] = 267, [18] = 287 })[GetLevel(myHero)] + GetBonusAP(myHero) *( { [1] = 0.55, [2] = 0.55, [3] = 0.55, [4] = 0.55, [5] = 0.55, [6] = 0.7, [7] = 0.7, [8] = 0.7, [9] = 0.7, [10] = 0.7, [11] = 0.85, [12] = 0.85, [13] = 0.85, [14] = 0.85, [15] = 0.85, [16] = 1, [17] = 1, [18] = 1 })[GetLevel(myHero)] + GetBonusDamage(myHero) *1))
 
 OnProcessSpell( function(unit, spell)
     if unit == myHero and spell.name == "KatarinaR" and self.Katarina.Combo.RC:Value() then
@@ -158,18 +158,6 @@ OnDeleteObj( function(o)
     end
 end )
 
-DamagePercent( function(target)
-
-	for i, enemy in pairs(GetEnemyHeroes()) do
-		WorldToScreen(0, GetOrigin(enemy)))
-		pos = GetHPBarPos(enemy)
-		calc1 = (getdmg("Q", target, myHero) + passiveDMG + getdmg("E", target, myHero) + getdmg("R", target, myHero)) / 100
-		calc2 = (GetCurrentHP(enemy) / 100 )	 * (103 / 100)
-		DrawLine(.pos.x, pos.y, pos.x + 2, pos.y + 2, )
-	end
-
-end )
-
 function Katarina:Draw()
     if self.Katarina.Draw.Q:Value() then
         DrawCircle(myHero, 625, 0, 150, GoS.White)
@@ -185,14 +173,13 @@ function Katarina:Draw()
     end
     if self.Katarina.Draw.Kill:Value() then
         for i, enemy in pairs(GetEnemyHeroes()) do
-    		pos = WorldToScreen(0, GetOrigin(enemy))
-    		DrawText(KatarinaKillable(enemy), 20, pos.x, pos.y,ARGB(255,255,255,255))
-		end
-    end
+    		WorldToScreen(0, GetOrigin(enemy))
+            DrawText3D(KatarinaKillable(enemy), 20, enemy.x, enemy.y, enemy.z, ARGB(255,255,255,255))
+        end
     if self.Katarina.Draw.Dmg:Value() then
     	for i, enemy in pairs(GetEnemyHeroes()) do
-    		WorldToScreen(0, GetOrigin(enemy))
-    		DrawText(KatarinaKillable(enemy))
+            WorldToScreen(0, GetOrigin(enemy))
+            DrawDmgOverHpBar(enemy, GetMaxHP(enemy),getdmg("E", target, myHero) + getdmg("Q", target, myHero) + passiveDMG + getdmg("R", target, myHero), 0,  GoS.White)
 		end
     end
 end
@@ -277,7 +264,7 @@ function Katarina:Tick()
     		end
     	end
     end
-    if Mode == "LaneClear"
+    if Mode == "LaneClear" then
     	for _, minion in pairs(minionManager.objects) do
     		if self.Katarina.LaneClear.E:Value() and Ready(_E) and ValidTarget(minion, 725) then
     			CastTargetSpell(_E, minion)
@@ -292,6 +279,7 @@ function Katarina:Tick()
     			end			
     		end
     	end	
+    end
     end
 end
 
