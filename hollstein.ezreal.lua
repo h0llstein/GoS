@@ -1,10 +1,11 @@
+if GetObjectName(GetMyHero()) ~= "Ezreal" then return end
 local ver = "1.0"
 
-require ("DamageLib")
-require ("OpenPredict")
-require ("2DGeometry")
+require("DamageLib")
+require("OpenPredict")
+require("2DGeometry")
 
-function GetBestLinearAOECastPosition(aoe_radius, range, listOfEntities)
+local function GetBestLinearAOECastPosition(aoe_radius, range, listOfEntities)
     -- If only one Minion in List we dont need to calc a Pos so escape from the function
     if #listOfEntities <= 1 then return false end
     -- Max will hold the Maximum Minions we can hit
@@ -44,7 +45,7 @@ function GetBestLinearAOECastPosition(aoe_radius, range, listOfEntities)
     return Data
 end
 
-function AutoUpdate(data)
+local function AutoUpdate(data)
     if tonumber(data) > tonumber(ver) then
         PrintChat("New version found!" .. data)
         PrintChat("Downloading update, please wait ...")
@@ -59,12 +60,8 @@ end
 GetWebResultAsync("https://github.com/h0llstein/GoS/blob/master/hollstein.ezreal.lua", AutoUpdate)
 
 local champ = { "Ezreal" }
-if GetObjectName(GetMyHero()) ~= "Lux" then return end
 
-require("DamageLib")
-require("OpenPredict")
-
-function Mode()
+local function Mode()
     if _G.IOW_Loaded and IOW:Mode() then
         return IOW:Mode()
     elseif _G.PW_Loaded and PW:Mode() then
@@ -182,11 +179,11 @@ function Ezreal:Tick()
         end
     end
     if Mode() == "LaneClear" then
-        if (myHero.mana / myHero.maxMana >= self.Ezreal.LaneClear.Mana:Value() / 100) then
-            if self.Ezreal.LaneClear.Q:Value() and Ready(_Q) and ValidTarget(minion, 1150) then
-                local QPred = GetPrediction(minion, self.Spells.Q)
-                if QPred.hitchance > 0.3 and not QPred:hCollision(1) then
-                    for _, minion in pairs(minionManager.objects) do
+        for _, minion in pairs(minionManager.objects) do
+            if (myHero.mana / myHero.maxMana >= self.Ezreal.LaneClear.Mana:Value() / 100) then
+                if self.Ezreal.LaneClear.Q:Value() and Ready(_Q) and ValidTarget(minion, 1150) then
+                    local QPred = GetPrediction(minion, self.Spells.Q)
+                    if QPred.hitchance > 0.3 and not QPred:hCollision(1) then
                         CastSkillshot(_Q, QPred.castPos)
                     end
                 end
