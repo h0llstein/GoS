@@ -59,7 +59,6 @@ end
 
 GetWebResultAsync("https://github.com/h0llstein/GoS/blob/master/hollstein.ezreal.lua", AutoUpdate)
 
-local champ = { "Ezreal" }
 
 local function Mode()
     if _G.IOW_Loaded and IOW:Mode() then
@@ -179,10 +178,10 @@ function Ezreal:Tick()
         end
     end
     if Mode() == "LaneClear" then
+        local QPred = GetPrediction(minion, self.Spells.Q)
         for _, minion in pairs(minionManager.objects) do
-            if (myHero.mana / myHero.maxMana >= self.Ezreal.LaneClear.Mana:Value() / 100) then
-                if self.Ezreal.LaneClear.Q:Value() and Ready(_Q) and ValidTarget(minion, 1150) then
-                    local QPred = GetPrediction(minion, self.Spells.Q)
+            if (myHero.mana / myHero.maxMana >= self.Ezreal.LaneClear.Mana:Value() / 100) and self.Ezreal.LaneClear.Q:Value() and Ready(_Q) then
+                if ValidTarget(minion, 1150) then
                     if QPred.hitchance > 0.3 and not QPred:hCollision(1) then
                         CastSkillshot(_Q, QPred.castPos)
                     end
@@ -201,54 +200,53 @@ function Ezreal:Tick()
     if Mode() == "LastHit" then
         if (myHero.mana / myHero.maxMana >= self.Ezreal.LastHit.Mana:Value() / 100) then
             for _, minion in pairs(minionManager.objects) do
-                if self.Ezreal.LastHit.Q:Value() and Ready(_Q) and ValidTarget(minion, 1150) then
-                    if GetCurrentHP(minion) < getdmg("Q", minion, myHero) then
-                        local QPred = GetPrediction(minion, self.Spells.Q)
-                        if QPred.hitChance > 0.3 and not QPred:hCollision(1) and not QPred:mCollision(1) then
-                            CastSkillshot(_Q, QPred.castPos)
-                        end
+                local QPred = GetPrediction(minion, self.Spells.Q)
+                if self.Ezreal.LastHit.Q:Value() and Ready(_Q) and ValidTarget(minion, 1150) and GetCurrentHP(minion) < getdmg("Q", minion, myHero) then
+                    if QPred.hitChance > 0.3 and not QPred:hCollision(1) and not QPred:mCollision(1) then
+                        CastSkillshot(_Q, QPred.castPos)
                     end
                 end
             end
         end
-
     end
-    for _, enemy in pairs(GetEnemyHeroes()) do
-        if self.Ezreal.Ks.Disabled:Value() or(IsRecalling(myHero) and self.Ezreal.Ks.REcall:Value()) then return end
-        if self.Ezreal.Ks.Q:Value() and Ready(_Q) and ValidTarget(enemy, 1150) then
-            if GetCurrentHP(enemy) < getdmg("Q", enemy, myHero) then
-                local QPred = GetPrediction(enemy, self.Spells.Q)
-                if QPred.hitChance > 0.3 and not QPred:mCollision(1) and not QPred:hCollision(1) then
-                    CastSkillShot(_Q, QPred.castPos)
-                end
+
+end
+for _, enemy in pairs(GetEnemyHeroes()) do
+    if self.Ezreal.Ks.Disabled:Value() or(IsRecalling(myHero) and self.Ezreal.Ks.REcall:Value()) then return end
+    if self.Ezreal.Ks.Q:Value() and Ready(_Q) and ValidTarget(enemy, 1150) then
+        if GetCurrentHP(enemy) < getdmg("Q", enemy, myHero) then
+            local QPred = GetPrediction(enemy, self.Spells.Q)
+            if QPred.hitChance > 0.3 and not QPred:mCollision(1) and not QPred:hCollision(1) then
+                CastSkillShot(_Q, QPred.castPos)
             end
         end
-        if self.Ezreal.Ks.W:Value() and Ready(_W) and ValidTarget(enemy, 1000) then
-            if GetCurrentHP(enemy) < getdmg("W", enemy, myHero) then
-                local WPred = GetLinearAOEPrediction(enemy, self.Spells.W)
-                if WPred.hitChance > 0.3 then
-                    CastSkillShot(_W, WPred.castPos)
-                end
+    end
+    if self.Ezreal.Ks.W:Value() and Ready(_W) and ValidTarget(enemy, 1000) then
+        if GetCurrentHP(enemy) < getdmg("W", enemy, myHero) then
+            local WPred = GetLinearAOEPrediction(enemy, self.Spells.W)
+            if WPred.hitChance > 0.3 then
+                CastSkillShot(_W, WPred.castPos)
             end
         end
-        if self.Ezreal.Ks.E:Value() and Ready(_E) and ValidTarget(enemy, 1225) then
-            if GetCurrentHP(enemy) < getdmg("E", enemy, myHero) then
-                local EPred = GetPrediction(enemy, self.Spells.E)
-                if EPred.hitChance > 0.3 then
-                    CastSkillshot(_W, WPred.castPos)
-                end
+    end
+    if self.Ezreal.Ks.E:Value() and Ready(_E) and ValidTarget(enemy, 1225) then
+        if GetCurrentHP(enemy) < getdmg("E", enemy, myHero) then
+            local EPred = GetPrediction(enemy, self.Spells.E)
+            if EPred.hitChance > 0.3 then
+                CastSkillshot(_W, WPred.castPos)
             end
         end
-        if self.Ezreal.Ks.R:Value() and Ready(_R) and ValidTarget(enemy, 3000) then
-            if GetCurrentHP(enemy) < getdmg("R", enemy, myHero) then
-                local RPred = GetLinearAOEPrediction(enemy, self.Spells.R)
-                if RPred.HitChance > 0.8 then
-                    CastSkillshot(_R, RPred.PredPos)
-                end
+    end
+    if self.Ezreal.Ks.R:Value() and Ready(_R) and ValidTarget(enemy, 3000) then
+        if GetCurrentHP(enemy) < getdmg("R", enemy, myHero) then
+            local RPred = GetLinearAOEPrediction(enemy, self.Spells.R)
+            if RPred.HitChance > 0.8 then
+                CastSkillshot(_R, RPred.PredPos)
             end
         end
     end
 end
+
 function Ezreal:Draw()
     if self.Ezreal.Draw.Q:Value() then
         DrawCircle(myHero, 1150, 0, 150, GoS.White)
